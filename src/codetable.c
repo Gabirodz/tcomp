@@ -45,6 +45,20 @@ void codeTable_insert(struct CodeNode *n, CodeTable *c_t)
     prev->next = n;
     // puts("out insert");
 }
+char * find_char_code(char c, CodeTable c_t)
+{
+    if(c_t.begin)
+    {
+        for(struct CodeNode * i_n = c_t.begin; i_n; i_n = i_n->next)
+        {
+            if(i_n->c == c)
+            {
+                return i_n->code;
+            }
+        }
+
+    }
+}
 
 void code_build(struct CharFreqNode *n, CodeTable *t, char *code)
 {
