@@ -16,6 +16,8 @@ int main(int argc, char const *argv[])
     HuffTree t = huffTree_construct_f_stream(fp);
 
     huffTree_qsort(&t);
+    puts("freqtable--------");
+    huffTree_print_table(t);
     huffTree_construct_tree(&t);
     puts("codetable------------");
     CodeTable c_t = construct_CodeTable_f_tree(t);
