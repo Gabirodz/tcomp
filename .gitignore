@@ -54,3 +54,6 @@ src/c
 
 # IDE setting files
 .vscode/
+
+# Test files
+*.test.txt
