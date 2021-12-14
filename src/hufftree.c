@@ -64,6 +64,7 @@ void huffTree_instert_ordered_node(struct CharFreqNode *node, HuffTree *t)
         return;
     }
 
+
     for (struct CharFreqNode *n = t->begin; n; n = n->next)
     {
         if ((n->val < node->val) && (!n->next || (n->next->val > node->val)))
@@ -71,6 +72,12 @@ void huffTree_instert_ordered_node(struct CharFreqNode *node, HuffTree *t)
             struct CharFreqNode *next_node = n->next;
             n->next = node;
             node->next = next_node;
+            break;
+        }
+        if(!n->next)
+        {
+            n->next  = node;
+            return;
         }
     }
 }
@@ -119,6 +126,7 @@ void huffTree_construct_tree(HuffTree *t)
         new_parent->val = new_parent->nextl->val + new_parent->nextr->val;
 
         huffTree_instert_ordered_node(new_parent, t);
+        // huffTree_enqueue(new_parent, t);
         ++i;
     }
 }
@@ -152,7 +160,6 @@ void huffTree_increase_freq(char c, HuffTree *t)
 
     if (!n)
     {
-        puts("constr");
         n = construct_CharFreqNode(c, 1, NULL);
         t->begin = n;
 
@@ -208,6 +215,7 @@ HuffTree huffTree_construct_f_stream(FILE *fp)
     {
         huffTree_increase_freq(c, &t);
     }
+    huffTree_increase_freq(C_EOT, &t);
 
     return t;
 }

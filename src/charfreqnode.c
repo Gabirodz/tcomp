@@ -31,6 +31,9 @@ struct CharFreqNode *construct_CharFreqNode(char c, int val, struct CharFreqNode
     n->val = val;
     n->next = next;
 
+    n->nextl = NULL;
+    n->nextr = NULL;
+
     return n;
 }
 
@@ -58,4 +61,6 @@ void node_print_tree(struct CharFreqNode *n)
         printf("going right from %d\n", (int)n->c);
         node_print_tree(n->nextr);
     }
+
+    
 }

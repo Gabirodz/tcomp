@@ -2,6 +2,7 @@
 #if !defined(HUFFTREE_H_)
 #define HUFFTREE_H_
 
+#define C_EOT 4
 #include <stdio.h>
 
 struct CharFreqNode;
