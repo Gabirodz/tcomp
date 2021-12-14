@@ -5,6 +5,6 @@
 
 int main(int argc, char const *argv[])
 {
-    // TODO
+    puts("Hello world!");
     return 0;
 }
