@@ -3,6 +3,8 @@
 #define HUFFTREE_H_
 
 #define C_EOT 4
+#define C_ENDSTREAM 3
+
 #include <stdio.h>
 
 struct CharFreqNode;
