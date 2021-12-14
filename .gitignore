@@ -57,3 +57,4 @@ src/c
 
 # Test files
 *.test.txt
+*.t.mp
