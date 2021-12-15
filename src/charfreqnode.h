@@ -26,5 +26,6 @@ struct CharFreqNode
 struct CharFreqNode *construct_CharFreqNode(char c, int val, struct CharFreqNode *next);
 void node_print_tree(struct CharFreqNode *n);
 int CharFreqNode_compare(const void *a, const void *b);
+void huffTree_nodeTree_deallocate(struct CharFreqNode *n);
 
 #endif // CHARFREQNODE_H_

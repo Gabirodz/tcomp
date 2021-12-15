@@ -64,3 +64,18 @@ void node_print_tree(struct CharFreqNode *n)
 
     
 }
+
+void huffTree_nodeTree_deallocate(struct CharFreqNode *n)
+{
+    if(n->nextl)
+    {
+        huffTree_nodeTree_deallocate(n->nextl);
+    }
+    if(n->nextr)
+    {
+        huffTree_nodeTree_deallocate(n->nextr);
+    }
+
+    free(n);
+    n = NULL;
+}
