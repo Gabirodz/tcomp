@@ -157,7 +157,7 @@ void construct_code_string(Byte b1, Byte b2, char *holder)
         if (pos == 0)
         {
             pos = 8;
-            base_b;
+            base_b = b2;
         }
 
         int bit = (base_b & (1 << pos - 1)) >> pos - 1; // pos in logic 1
@@ -199,9 +199,7 @@ HuffTree construct_huffTree_f_stream(FILE *src)
 
         construct_code_string(b1, b2, code);
 
-
         struct CharFreqNode *n = construct_CharFreqNode(c, 0, NULL);
-        printf("%c : %s\n", c, code);
 
         if (!t.begin)
         {

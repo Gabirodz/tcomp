@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     }
 
     char *command = argv[1];
-    char * const src_path = argv[2];
+    char *const src_path = argv[2];
 
     if (strcmp(command, "c") == 0)
     {
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
         fclose(src_fp);
         huffTree_qsort(&t);
-        
+
         huffTree_construct_tree(&t);
         CodeTable c_t = construct_CodeTable_f_tree(t);
         codeTable_print(c_t);
@@ -47,11 +47,8 @@ int main(int argc, char *argv[])
         char *dest_path = strcat(strtok(src_path, "."), ".txt");
         puts("constructinf tree");
         HuffTree t = construct_huffTree_f_stream(src_fp);
-        CodeTable c_t =  construct_CodeTable_f_tree(t);
+        CodeTable c_t = construct_CodeTable_f_tree(t);
         codeTable_print(c_t);
-        
-
-        
     }
 
     return 0;
