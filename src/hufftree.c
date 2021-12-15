@@ -1,6 +1,7 @@
 /// @file hufftree.c
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "hufftree.h"
 #include "charfreqnode.h"
 
@@ -215,7 +216,7 @@ HuffTree huffTree_construct_f_stream(FILE *fp)
     {
         huffTree_increase_freq(c, &t);
     }
-    huffTree_increase_freq(C_EOT, &t);
+    huffTree_increase_freq(C_ENDSTREAM, &t);
 
     return t;
 }
@@ -278,4 +279,58 @@ void huffTree_qsort(HuffTree *t)
         n->next = huffTree_ptrs[i];
         n = n->next;
     }
+}
+
+void huffTree_insert_charFreqNode(struct CharFreqNode *n, char * code, struct CharFreqNode * parent)
+{
+
+    if(strcmp(code, "1") == 0) // Strings equal, right path
+    {
+        if(parent->nextr != NULL)
+        {
+            // TODO: Free node subtree
+            free(parent->nextr);
+        }
+
+        parent->nextr = n;
+        return;
+    }
+
+    if(strcmp(code, "0") == 0) // Strings equal, left path
+    {
+        if(parent->nextl != NULL)
+        {
+            // TODO: Free node subtree
+            free(parent->nextl);
+        }
+
+        parent->nextl = n;
+        return;
+    }
+
+    if(code[0] == '1')
+    {
+        if(!(parent->nextr))
+        {
+            struct CharFreqNode * new_node = construct_CharFreqNode(0, 0, NULL);
+            parent->nextr = new_node;
+            
+        }
+        huffTree_insert_charFreqNode(n, code + 1, parent->nextr);
+        return;
+    }
+    if(code[0] == '0')
+    {
+        if(!(parent->nextl))
+        {
+            struct CharFreqNode * new_node = construct_CharFreqNode(0, 0, NULL);
+            parent->nextl = new_node;
+            
+        }
+        huffTree_insert_charFreqNode(n, code + 1, parent->nextl);
+        return;
+
+    }
+
+
 }

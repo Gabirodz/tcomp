@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "codetable.h"
+#include "charfreqnode.h"
 #include "strbin.h"
 #include "hufftree.h"
 
@@ -34,12 +35,12 @@ void write_code_to_stream(FILE *src, FILE *dest, CodeTable c_t)
 
     for (char c = getc(src);; c = getc(src))
     {
-
+        
         int trigger_exit = 0;
 
         if (c == EOF)
         {
-            c = C_EOT;
+            c = C_ENDSTREAM;
             trigger_exit = 1;
         }
 
@@ -108,7 +109,6 @@ void write_codeTable_to_stream(FILE *dest, CodeTable c_t)
             set_bit(&b, i_n->code[j], (i % 8));
         }
 
-        printf("writtenbytes = %d\n", written_bytes);
         if (written_bytes != 3)
         {
             Byte zero = 0;
@@ -118,10 +118,12 @@ void write_codeTable_to_stream(FILE *dest, CodeTable c_t)
 
     Byte end = (Byte)C_EOT;
     fwrite(&end, sizeof(Byte), 1, dest);
+    return;
 }
 
 void write_encode_to_file(char const *src_path, char const *dest_path, CodeTable c_t)
 {
+
     FILE *src_p = fopen(src_path, "r");
     FILE *dest_p = fopen(dest_path, "wb");
 
@@ -142,7 +144,39 @@ void write_encode_to_file(char const *src_path, char const *dest_path, CodeTable
     fclose(dest_p);
 }
 
-HuffTree construct_huffTree_f_stream(FILE* src)
+void construct_code_string(Byte b1, Byte b2, char *holder)
+{
+    int size = b1 >> 4;
+    Byte base_b = b1;
+
+    int code_char = 0;
+    int initial_i = 12;
+    for (int i = initial_i; i > initial_i - size; --i)
+    {
+        int pos = i % 8;
+        if (pos == 0)
+        {
+            pos = 8;
+            base_b;
+        }
+
+        int bit = (base_b & (1 << pos - 1)) >> pos - 1; // pos in logic 1
+
+        if (bit == 1)
+        {
+            holder[code_char] = '1';
+        }
+        else
+        {
+            holder[code_char] = '0';
+        }
+        ++code_char;
+    }
+
+    holder[code_char] = '\0';
+}
+
+HuffTree construct_huffTree_f_stream(FILE *src)
 {
     HuffTree t;
     t.begin = NULL;
@@ -150,11 +184,31 @@ HuffTree construct_huffTree_f_stream(FILE* src)
     while (1)
     {
         char c;
+
         fread(&c, sizeof(char), 1, src);
 
+        if (c == C_EOT)
+            break;
+
+        Byte b1;
+        Byte b2;
+        fread(&b1, sizeof(Byte), 1, src);
+        fread(&b2, sizeof(Byte), 1, src);
+
+        char code[CODE_MAX_LENGTH];
+
+        construct_code_string(b1, b2, code);
+
+
+        struct CharFreqNode *n = construct_CharFreqNode(c, 0, NULL);
+        printf("%c : %s\n", c, code);
+
+        if (!t.begin)
+        {
+            t.begin = construct_CharFreqNode(0,0,NULL);
+        }
+        huffTree_insert_charFreqNode(n, code, t.begin);
     }
-    
 
+    return t;
 }
-
-

@@ -45,5 +45,6 @@ void huffTree_print_table(HuffTree t);
 HuffTree huffTree_construct_f_stream(FILE *fp);
 void huffTree_destroy(HuffTree t);
 void huffTree_qsort(HuffTree *t);
+void huffTree_insert_charFreqNode(struct CharFreqNode *n, char * code, struct CharFreqNode * parent);
 
 #endif // HUFFTREE_H_
