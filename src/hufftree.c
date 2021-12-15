@@ -7,10 +7,10 @@
 
 /**
  * @brief Get the frequency of a node in a HuffTree structure.
- * 
- * @param c 
- * @param t 
- * @return unsigned long 
+ *
+ * @param c
+ * @param t
+ * @return unsigned long
  */
 unsigned long huffTree_get_freq(char c, HuffTree t)
 {
@@ -25,12 +25,12 @@ unsigned long huffTree_get_freq(char c, HuffTree t)
 
 /**
  * @brief Enqueues a node in the HuffTree structure
- * 
+ *
  * Enqueued nodes in the tree will appear at the last horizontal
  * node from the tree parent.
- * 
- * @param node 
- * @param t 
+ *
+ * @param node
+ * @param t
  */
 void huffTree_enqueue(struct CharFreqNode *node, HuffTree *t)
 {
@@ -51,11 +51,11 @@ void huffTree_enqueue(struct CharFreqNode *node, HuffTree *t)
 }
 
 /**
- * @brief Insert a node horizontally in the correct position of a frequency-ordered tree 
- * 
+ * @brief Insert a node horizontally in the correct position of a frequency-ordered tree
+ *
  * The tree MUST BE ORDERED incrementally by frequency and horizontally,
- * @param node 
- * @param t 
+ * @param node
+ * @param t
  */
 void huffTree_instert_ordered_node(struct CharFreqNode *node, HuffTree *t)
 {
@@ -64,7 +64,6 @@ void huffTree_instert_ordered_node(struct CharFreqNode *node, HuffTree *t)
         t->begin = node;
         return;
     }
-
 
     for (struct CharFreqNode *n = t->begin; n; n = n->next)
     {
@@ -75,9 +74,9 @@ void huffTree_instert_ordered_node(struct CharFreqNode *node, HuffTree *t)
             node->next = next_node;
             break;
         }
-        if(!n->next)
+        if (!n->next)
         {
-            n->next  = node;
+            n->next = node;
             return;
         }
     }
@@ -85,11 +84,11 @@ void huffTree_instert_ordered_node(struct CharFreqNode *node, HuffTree *t)
 
 /**
  * @brief Dequeues the parent node of the tree and returns it.
- * 
+ *
  * The next node (horizontal) will take the begin field of the tree.
- * 
- * @param t 
- * @return struct CharFreqNode* 
+ *
+ * @param t
+ * @return struct CharFreqNode*
  */
 struct CharFreqNode *huffTree_dequeue(HuffTree *t)
 {
@@ -104,14 +103,14 @@ struct CharFreqNode *huffTree_dequeue(HuffTree *t)
 
 /**
  * @brief Constructs the Huffman tree
- * 
+ *
  * Iteratively take (dequeue) the first two horizontal nodes n1, n2 of the
  * tree, creates a parent node p and assigns the two nodes n1, n2 as its
  * left and right childs, it then enqueues the parent node to the Hufftree.
- * 
+ *
  * The process is repeated until the huffTree only has a single node, parent
  * of the rest of the original nodes of the tree, forming the Huffman tree.
- * @param t 
+ * @param t
  */
 void huffTree_construct_tree(HuffTree *t)
 {
@@ -133,9 +132,9 @@ void huffTree_construct_tree(HuffTree *t)
 }
 /**
  * @brief Iteratively gets the number of horizontal nodes in a tree.
- * 
- * @param t 
- * @return int 
+ *
+ * @param t
+ * @return int
  */
 int huffTree_length(HuffTree t)
 {
@@ -149,11 +148,11 @@ int huffTree_length(HuffTree t)
     return count;
 }
 /**
- * @brief Increases the frequency of a character in the 
+ * @brief Increases the frequency of a character in the
  * horizontal nodes of the tree.
- * 
- * @param c 
- * @param t 
+ *
+ * @param c
+ * @param t
  */
 void huffTree_increase_freq(char c, HuffTree *t)
 {
@@ -183,10 +182,10 @@ void huffTree_increase_freq(char c, HuffTree *t)
 }
 
 /**
- * @brief Prints the horizontal nodes of the tree in the 
+ * @brief Prints the horizontal nodes of the tree in the
  * form of a table.
- * 
- * @param t 
+ *
+ * @param t
  */
 void huffTree_print_table(HuffTree t)
 {
@@ -203,9 +202,9 @@ void huffTree_print_table(HuffTree t)
 /**
  * @brief Constructs a Hufftree of horizontal nodes, each representing
  * a character and the frequency it appears on the stream.
- * 
- * @param fp 
- * @return HuffTree 
+ *
+ * @param fp
+ * @return HuffTree
  */
 HuffTree huffTree_construct_f_stream(FILE *fp)
 {
@@ -222,11 +221,11 @@ HuffTree huffTree_construct_f_stream(FILE *fp)
 }
 /**
  * @brief Iteratively destroys the horizontal nodes of a tree.
- * 
+ *
  * WARNING: This function does not free the memory from the child nodes.
  * Only use it when the tree consists of a single level.
- * 
- * @param t 
+ *
+ * @param t
  */
 void huffTree_destroy(HuffTree t)
 {
@@ -237,19 +236,19 @@ void huffTree_destroy(HuffTree t)
         t.begin = n;
     }
 
-    free(t.begin); //Free last node.
+    free(t.begin); // Free last node.
     t.begin = NULL;
 }
 /**
  * @brief Sort the horizontal nodes of the tree increasingly according
  * to their integer val (frequency).
- * 
+ *
  * Creates an array of all the CharFreqNode pointers of the horizontal
  * tree, then sorts this array using qsort() from <stdlib.h> and the CharFreqNode_compare()
  * function. Lastly, it rebuilds the tree following the
  * order of the array.
- * 
- * @param t 
+ *
+ * @param t
  */
 void huffTree_qsort(HuffTree *t)
 {
@@ -281,56 +280,49 @@ void huffTree_qsort(HuffTree *t)
     }
 }
 
-void huffTree_insert_charFreqNode(struct CharFreqNode *n, char * code, struct CharFreqNode * parent)
+void huffTree_insert_charFreqNode(struct CharFreqNode *n, char *code, struct CharFreqNode *parent)
 {
 
-    if(strcmp(code, "1") == 0) // Strings equal, right path
+    if (strcmp(code, "1") == 0) // Strings equal, right path
     {
-        if(parent->nextr != NULL)
+        if (parent->nextr != NULL)
         {
-            // TODO: Free node subtree
-            free(parent->nextr);
+            huffTree_nodeTree_deallocate(parent->nextr);
         }
 
         parent->nextr = n;
         return;
     }
 
-    if(strcmp(code, "0") == 0) // Strings equal, left path
+    if (strcmp(code, "0") == 0) // Strings equal, left path
     {
-        if(parent->nextl != NULL)
+        if (parent->nextl != NULL)
         {
-            // TODO: Free node subtree
-            free(parent->nextl);
+            huffTree_nodeTree_deallocate(parent->nextl);
         }
 
         parent->nextl = n;
         return;
     }
 
-    if(code[0] == '1')
+    if (code[0] == '1')
     {
-        if(!(parent->nextr))
+        if (!(parent->nextr))
         {
-            struct CharFreqNode * new_node = construct_CharFreqNode(0, 0, NULL);
+            struct CharFreqNode *new_node = construct_CharFreqNode(0, 0, NULL);
             parent->nextr = new_node;
-            
         }
         huffTree_insert_charFreqNode(n, code + 1, parent->nextr);
         return;
     }
-    if(code[0] == '0')
+    if (code[0] == '0')
     {
-        if(!(parent->nextl))
+        if (!(parent->nextl))
         {
-            struct CharFreqNode * new_node = construct_CharFreqNode(0, 0, NULL);
+            struct CharFreqNode *new_node = construct_CharFreqNode(0, 0, NULL);
             parent->nextl = new_node;
-            
         }
         huffTree_insert_charFreqNode(n, code + 1, parent->nextl);
         return;
-
     }
-
-
 }

@@ -77,7 +77,6 @@ void write_codeTable_to_stream(FILE *dest, CodeTable c_t)
 {
     for (struct CodeNode *i_n = c_t.begin; i_n; i_n = i_n->next)
     {
-        puts("begined loop;");
         // First byte is the character
         fwrite(&(i_n->c), sizeof(char), 1, dest);
 
@@ -85,13 +84,11 @@ void write_codeTable_to_stream(FILE *dest, CodeTable c_t)
         Byte codesize = (Byte)strlen(i_n->code);
         Byte b = codesize;
         b = b << 3;
-        puts("assigned initial size");
 
         // The rest bytes up to codesize-3 /8 is the code.
         int written_bytes = 1;
 
         int extra_bytes = (((int)codesize - 4) + 8) / 8;
-        printf("char: %c, extrabytes: %d, size = %d\n", i_n->c, extra_bytes, (int)codesize);
         int char_pos = 0;
 
         for (int written_bytes = 0; written_bytes <= extra_bytes; ++written_bytes)
@@ -147,13 +144,11 @@ void write_encode_to_file(char const *src_path, char const *dest_path, CodeTable
 
     if (!src_p)
     {
-        puts("Could not open file for compr");
         return;
     }
     if (!dest_p)
     {
-        printf("Error writing compressed file. Aborting...\n");
-        exit(1); // ------- checar- --- -
+        return;
     }
 
     write_encode_to_stream(src_p, dest_p, c_t);
@@ -169,21 +164,13 @@ void construct_code_string(char *holder, FILE *src) // -------------PROBELM-----
     fread(&size_byte, sizeof(Byte), 1, src);
     int size = size_byte >> 3;
 
-    if (size > 12)
-    {
-        puts("-------------------------------warning large size-----------------");
-    }
-    printf("received size; %d\n", size);
-
     int extra_bytes = ((size - 4) + 8) / 8;
 
-    printf("extrabais: %d\n", extra_bytes);
     Byte base_b;
     int code_char = 0;
 
     for (int byte = 0; byte <= extra_bytes; ++byte)
     {
-        printf("run: %d\n", byte);
 
         if (byte == 0)
         {
@@ -195,7 +182,6 @@ void construct_code_string(char *holder, FILE *src) // -------------PROBELM-----
                 if (code_char == size)
                     break;
 
-                // printf("bit_pos: %d\n", bit_pos);
                 int bit = (base_b & (1 << bit_pos)) >> bit_pos;
                 if (bit == 1)
                 {
@@ -233,7 +219,6 @@ void construct_code_string(char *holder, FILE *src) // -------------PROBELM-----
     }
 
     holder[code_char] = '\0';
-    puts(holder);
 }
 
 HuffTree construct_huffTree_f_stream(FILE *src)
@@ -243,25 +228,18 @@ HuffTree construct_huffTree_f_stream(FILE *src)
 
     while (1)
     {
-        puts("Executing construct_hufftree");
         char c;
 
         fread(&c, sizeof(char), 1, src); // read the char in codeTable header.
 
-        puts("ended readchar");
-        printf("read char: %c\n", c);
         if (c == C_EOT)
         {
-            puts("fouind endstream");
             break;
         }
 
-        puts("ended readchar");
         char code[CODE_MAX_LENGTH];
 
-        puts("begin construct");
-        construct_code_string(code, src); // -------------PROBELM--------=// -------------PROBELM--------=
-        puts("end construct");
+        construct_code_string(code, src); 
 
         struct CharFreqNode *n = construct_CharFreqNode(c, 0, NULL);
 
@@ -300,8 +278,6 @@ void tree_decode_to_stream(FILE *src, FILE *dest, HuffTree t)
                         found_endstream = 1;
                         break;
                     }
-                    printf("found char: %c  (%d)\n", follow_ptr->c, (int)follow_ptr->c);
-
                     fprintf(dest, "%c", follow_ptr->c);
                     follow_ptr = topnode;
                 }
@@ -317,8 +293,6 @@ void tree_decode_to_stream(FILE *src, FILE *dest, HuffTree t)
                         found_endstream = 1;
                         break;
                     }
-                    printf("found char: %c  (%d)\n", follow_ptr->c, (int)follow_ptr->c);
-
                     fprintf(dest, "%c", follow_ptr->c);
                     follow_ptr = topnode;
                 }
@@ -358,7 +332,7 @@ void encode_to_file(char *src_path, char *dest_path)
     huffTree_nodeTree_deallocate(t.begin);
     codeTable_deallocate(c_t);
 
-    puts("File compressed");
+    puts("File compressed.");
 }
 
 void decode_to_file(char *src_path, char *dest_path)
@@ -385,7 +359,7 @@ void decode_to_file(char *src_path, char *dest_path)
     puts("Decoding the text...");
     tree_decode_to_stream(src_fp, dest_fp, t);
 
-    puts("Cleaning");
+    puts("Cleaning...");
     huffTree_nodeTree_deallocate(t.begin);
 
     puts("File decompressed.");
