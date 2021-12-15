@@ -1,7 +1,7 @@
 #if !defined(CODETABLE_H_)
 #define CODETABLE_H_
 
-#define CODE_MAX_LENGTH 12
+#define CODE_MAX_LENGTH 31
 
 struct CodeNode
 {
