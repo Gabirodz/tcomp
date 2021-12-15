@@ -266,6 +266,7 @@ void encode_to_file(char *src_path, char *dest_path)
     if(!src_fp)
     {
         printf("Could not open the file for compression. Aborting!!! (check your privileges)\n");
+        return;
     }
 
     HuffTree t = huffTree_construct_f_stream(src_fp);
@@ -276,7 +277,10 @@ void encode_to_file(char *src_path, char *dest_path)
     huffTree_construct_tree(&t);
     CodeTable c_t = construct_CodeTable_f_tree(t); // Table of the codes for each char for encoding
     write_encode_to_file(src_path, dest_path, c_t);
-    huffTree_destroy(t);
+
+    huffTree_nodeTree_deallocate(t.begin);
+    codeTable_deallocate(c_t);
+    
 }
 
 void decode_to_file(char *src_path, char *dest_path)
