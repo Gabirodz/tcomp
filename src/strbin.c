@@ -210,3 +210,75 @@ HuffTree construct_huffTree_f_stream(FILE *src)
 
     return t;
 }
+
+void tree_decode_to_stream(FILE * src, FILE * dest,  HuffTree t)
+{
+    
+    struct CharFreqNode * topnode = t.begin;
+    struct CharFreqNode* follow_ptr = topnode;
+    int found_endstream = 0;
+
+    Byte b;
+    while(!found_endstream)
+    {
+        fread(&b, sizeof(Byte), 1, src);
+
+
+        for(int i = 7; i >= 0; --i)
+        {
+            int bit = (b & (1 << i )) >> i ; //ith bit in b
+
+            if(bit == 0) //LEFT PATH
+            {
+                if(!follow_ptr->nextl)
+                {
+                    if(follow_ptr->c == C_ENDSTREAM)
+                    {
+                        found_endstream = 1;
+                        break;
+                    }
+                    fprintf(dest,"%c",follow_ptr->c);
+                    follow_ptr = topnode;
+                }
+                follow_ptr = follow_ptr->nextl;
+            }
+
+            if(bit == 1) // RIGHT PATH
+            {
+                if(!follow_ptr->nextr)
+                {
+                    if(follow_ptr->c == C_ENDSTREAM)
+                    {
+                        found_endstream = 1;
+                        break;
+                    }
+                    fprintf(dest,"%c",follow_ptr->c);
+                    follow_ptr = topnode;
+                }
+                follow_ptr = follow_ptr->nextr;
+            }
+        }
+    }
+
+}
+
+void decode_to_file(char * src_path, char * dest_path)
+{
+    FILE *src_fp = fopen(src_path, "rb"); //compressed file in binary
+    FILE *dest_fp = fopen(dest_path, "w"); //write in text
+
+    if(!src_fp)
+    {
+        printf("Error opening the compressed file. Aborting!!! (check that the file exists and you have the appropiate permissions)\n");
+        return;
+    }
+    if(!dest_fp)
+    {
+        printf("Error decompressing file. Aborting!!! (check if you have the appropiate permissions to write to <target>)\n");
+        return;
+    }
+
+    HuffTree t = construct_huffTree_f_stream(src_fp);
+
+    tree_decode_to_stream(src_fp, dest_fp, t);
+}

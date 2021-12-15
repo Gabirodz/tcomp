@@ -16,6 +16,8 @@ void write_codeTable_to_stream(FILE * dest, CodeTable c_t);
 void write_decode_f_file(char const* src, char const* dest_path);
 void write_decode_f_stream(FILE *src, FILE* dest);
 HuffTree construct_huffTree_f_stream(FILE* src);
+void tree_decode_to_stream(FILE * src, FILE * dest,  HuffTree t);
+void decode_to_file(char * src_path, char * dest_path);
 
 
 

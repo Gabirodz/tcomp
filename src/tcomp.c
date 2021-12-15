@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 
     char *command = argv[1];
     char *const src_path = argv[2];
+    char * dest_path = argv[3];
 
     if (strcmp(command, "c") == 0)
     {
@@ -43,12 +44,13 @@ int main(int argc, char *argv[])
     }
     else if (strcmp(command, "d") == 0)
     {
-        FILE *src_fp = fopen(src_path, "rb");
-        char *dest_path = strcat(strtok(src_path, "."), ".txt");
-        puts("constructinf tree");
-        HuffTree t = construct_huffTree_f_stream(src_fp);
-        CodeTable c_t = construct_CodeTable_f_tree(t);
-        codeTable_print(c_t);
+        // if (!dest_path)
+        // {
+        //     char * dest_path = strcat(strtok(src_path, "."), ".txt");
+
+        // }
+        
+        decode_to_file(src_path, "./compiled.txt");
     }
 
     return 0;
