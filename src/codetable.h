@@ -23,5 +23,6 @@ void codeTable_insert(struct CodeNode *n, CodeTable *c_t);
 void code_build(struct CharFreqNode *n, CodeTable *t, char *code);
 char *find_char_code(char c, CodeTable c_t);
 void codeTable_print(CodeTable t);
+void codeTable_deallocate(CodeTable c_t);
 
 #endif // CODETABLE_H_

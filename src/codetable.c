@@ -100,6 +100,19 @@ CodeTable construct_CodeTable_f_tree(HuffTree t)
     return c_t;
 }
 
+void codeTable_deallocate(CodeTable c_t)
+{
+    for(struct CodeNode *i_cn = c_t.begin; i_cn;)
+    {
+        struct CodeNode * next_ptr = i_cn->next;
+        
+        free(i_cn->code);
+        free(i_cn);
+
+        i_cn = next_ptr;
+    }
+}
+
 void codeTable_print(CodeTable t)
 {
     for (struct CodeNode *n = t.begin; n; n = n->next)
