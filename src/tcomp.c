@@ -5,25 +5,22 @@
 #include "charfreqnode.h"
 #include "codetable.h"
 #include "strbin.h"
+#include "tcomputils.h"
 
 int main(int argc, char *argv[])
 {
     if (argc != 3)
     {
-        puts("tcomp <c/d> <source> ");
-        puts("<c/d>: c for compression, d for decompression");
-        puts("<source>: file to compress, or compressed .t.mp file");
-        puts("NOTE: It will overwrite\n"
-             "any file with name <source><(decompressed).txt/.t.mp> depending on the command.");
-        return 2;
+        print_help();
+        return 1;
     }
 
     char *command = argv[1];
     char *const src_path = argv[2];
 
-    if (strcmp(command, "c") == 0)
+    if (strcmp(command, "c") == 0) // compress command
     {
-
+        if(check_empty(src_path) != 0) return 1;
         char targetname[64];
         strcpy(targetname, src_path);
         char *dest_path = strcat(strtok(targetname, "."), ".t.mp");
@@ -32,7 +29,7 @@ int main(int argc, char *argv[])
         
         
     }
-    else if (strcmp(command, "d") == 0)
+    else if (strcmp(command, "d") == 0) //decompress command
     {
         char targetname[64];
         strcpy(targetname, src_path);
@@ -41,12 +38,8 @@ int main(int argc, char *argv[])
         decode_to_file(src_path, dest_path);
     } else
     {
-        puts("tcomp <c/d> <source> ");
-        puts("<c/d>: c for compression, d for decompression");
-        puts("<source>: file to compress, or compressed .t.mp file");
-        puts("NOTE: It will overwrite\n"
-             "any file with name <source><(decompressed).txt/.t.mp> depending on the command.");
-        return 2;
+        print_help();
+        return 1;
 
     }
 

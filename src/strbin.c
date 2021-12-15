@@ -337,40 +337,58 @@ void encode_to_file(char *src_path, char *dest_path)
         return;
     }
 
+    puts("Analyzing character frequency...");
     HuffTree t = huffTree_construct_f_stream(src_fp);
 
     fclose(src_fp);
 
+    puts("Sorting the characters by frequency...");
     huffTree_qsort(&t); // Sort the horizontal nodes by frequency to optimize tree construction
+    
+    puts("Constructing the binary tree...");
     huffTree_construct_tree(&t);
-    CodeTable c_t = construct_CodeTable_f_tree(t); // Table of the codes for each char for encoding
-    puts("before encode");
-    write_encode_to_file(src_path, dest_path, c_t);
-    puts("----codetable----");
-    codeTable_print(c_t);
 
+    puts("Constructing the code table...");
+    CodeTable c_t = construct_CodeTable_f_tree(t); // Table of the codes for each char for encoding
+
+    puts("Writing encoded text to target...");
+    write_encode_to_file(src_path, dest_path, c_t);
+
+    puts("Cleaning...");
     huffTree_nodeTree_deallocate(t.begin);
     codeTable_deallocate(c_t);
+
+    puts("File compressed");
 }
 
 void decode_to_file(char *src_path, char *dest_path)
 {
     FILE *src_fp = fopen(src_path, "rb");  // compressed file in binary
-    FILE *dest_fp = fopen(dest_path, "w"); // write in text
 
     if (!src_fp)
     {
-        printf("Error opening the compressed file. Aborting!!! (check that the file exists and you have the appropiate permissions)\n");
+        printf("Error opening the compressed file. Aborting. (check that the file exists and you have the appropiate permissions)\n");
         return;
     }
+
+    FILE *dest_fp = fopen(dest_path, "w"); // write in text
+
     if (!dest_fp)
     {
-        printf("Error decompressing file. Aborting!!! (check if you have the appropiate permissions to write to <target>)\n");
+        printf("Error decompressing file to target. Aborting. (Check that you have the appropiate permissions to write to the folder)\n");
         return;
     }
 
+    puts("Constructing the tree...");
     HuffTree t = construct_huffTree_f_stream(src_fp);
-    puts("constructed huffman tree");
 
+    puts("Decoding the text...");
     tree_decode_to_stream(src_fp, dest_fp, t);
+
+    puts("Cleaning");
+    huffTree_nodeTree_deallocate(t.begin);
+
+    puts("File decompressed.");
+    fclose(src_fp);
+    fclose(dest_fp);
 }
