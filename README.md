@@ -2,11 +2,13 @@
 
 ## Command-line text compressor
 
-tcomp is a command-line single text file compressor.
+`tcomp` is a command-line single text file compressor.
 
 ## How it works
 
-tcomp utilizes Huffman Coding to encode and decode the text file.
+`tcomp` utilizes Huffman Coding to encode and decode the text file.
+The main data structure of `tcomp` is the `HuffTree`.
+
 
 ## How to run
 
