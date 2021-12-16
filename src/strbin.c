@@ -66,7 +66,7 @@ void write_code_to_stream(FILE *src, FILE *dest, CodeTable c_t)
 
         if (trigger_exit == 1)
         {
-            
+
             fwrite(&b, sizeof(char), 1, dest);
             return;
         }
@@ -199,7 +199,7 @@ void construct_code_string(char *holder, FILE *src) // -------------PROBELM-----
 
             fread(&base_b, sizeof(Byte), 1, src);
 
-            for (int bit_pos = 7; bit_pos >= 0; --bit_pos) 
+            for (int bit_pos = 7; bit_pos >= 0; --bit_pos)
             {
                 if (code_char == size)
                     break;
@@ -239,7 +239,7 @@ HuffTree construct_huffTree_f_stream(FILE *src)
 
         char code[CODE_MAX_LENGTH];
 
-        construct_code_string(code, src); 
+        construct_code_string(code, src);
 
         struct CharFreqNode *n = construct_CharFreqNode(c, 0, NULL);
 
@@ -318,7 +318,7 @@ void encode_to_file(char *src_path, char *dest_path)
 
     puts("Sorting the characters by frequency...");
     huffTree_qsort(&t); // Sort the horizontal nodes by frequency to optimize tree construction
-    
+
     puts("Constructing the binary tree...");
     huffTree_construct_tree(&t);
 
@@ -337,7 +337,7 @@ void encode_to_file(char *src_path, char *dest_path)
 
 void decode_to_file(char *src_path, char *dest_path)
 {
-    FILE *src_fp = fopen(src_path, "rb");  // compressed file in binary
+    FILE *src_fp = fopen(src_path, "rb"); // compressed file in binary
 
     if (!src_fp)
     {

@@ -5,10 +5,10 @@
 
 /**
  * @brief Compares two CharFreqNode* for use with qsort.
- * 
+ *
  * @param a CharFreqNode* a
  * @param b CharFreqNode* b
- * @return int 
+ * @return int
  */
 int CharFreqNode_compare(const void *a, const void *b)
 {
@@ -21,7 +21,7 @@ int CharFreqNode_compare(const void *a, const void *b)
  * @param c character value
  * @param val integer value
  * @param next next horizontal node
- * @return struct CharFreqNode* 
+ * @return struct CharFreqNode*
  */
 struct CharFreqNode *construct_CharFreqNode(char c, int val, struct CharFreqNode *next)
 {
@@ -41,7 +41,7 @@ struct CharFreqNode *construct_CharFreqNode(char c, int val, struct CharFreqNode
  * @brief Prints the tree of a given node.
  * This function omits horizontal nodes and recursively
  * prints the children nodes of n.
- * 
+ *
  * @param n Parent node.
  */
 void node_print_tree(struct CharFreqNode *n)
@@ -61,17 +61,15 @@ void node_print_tree(struct CharFreqNode *n)
         printf("going right from %d\n", (int)n->c);
         node_print_tree(n->nextr);
     }
-
-    
 }
 
 void huffTree_nodeTree_deallocate(struct CharFreqNode *n)
 {
-    if(n->nextl)
+    if (n->nextl)
     {
         huffTree_nodeTree_deallocate(n->nextl);
     }
-    if(n->nextr)
+    if (n->nextr)
     {
         huffTree_nodeTree_deallocate(n->nextr);
     }

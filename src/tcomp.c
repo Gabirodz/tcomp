@@ -20,27 +20,26 @@ int main(int argc, char *argv[])
 
     if (strcmp(command, "c") == 0) // compress command
     {
-        if(check_empty(src_path) != 0) return 1;
+        if (check_empty(src_path) != 0)
+            return 1;
         char targetname[64];
         strcpy(targetname, src_path);
         char *dest_path = strcat(strtok(targetname, "."), ".t.mp");
 
         encode_to_file(src_path, dest_path);
-        
-        
     }
-    else if (strcmp(command, "d") == 0) //decompress command
+    else if (strcmp(command, "d") == 0) // decompress command
     {
         char targetname[64];
         strcpy(targetname, src_path);
         char *dest_path = strcat(strtok(targetname, "."), "(decompressed).txt");
 
         decode_to_file(src_path, dest_path);
-    } else
+    }
+    else
     {
         print_help();
         return 1;
-
     }
 
     return 0;

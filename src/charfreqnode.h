@@ -4,7 +4,7 @@
 
 /**
  * @brief Node type for the HuffTree.
- * 
+ *
  * This type represents an ASCII character, an integer
  * value (to be used to store character frequency) and
  * a relation with 3 other nodes. The nextl and nextr
@@ -12,7 +12,7 @@
  * and the next node represents an horizontal connection with another node,
  * which is needed for the initial sorting of the frequency list
  * and during the construction of the Huffman tree.
- * 
+ *
  */
 struct CharFreqNode
 {

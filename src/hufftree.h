@@ -11,21 +11,21 @@ struct CharFreqNode;
 
 /**
  * @brief The main data structure of the program, multi-purpose data structure wrapper.
- * 
+ *
  * The HuffTree consists of a single field pointing at the beginning or
  * parent node of the tree. Each node in the tree has 3 possible connections to another node.
- * 
+ *
  * The "horizontal tree" refers to all the nodes connected horizontally to
  * the begin node of this structure. (i.e. the nodes references in the 'next' field of each node).
- * 
+ *
  * Each nodes has a left and right child.
- * 
+ *
  * This data structure serves initially as the Frequency table, when all
  * nodes are connected only horizontally and there are no child nodes.
- * 
+ *
  * After constructing the tree, the begin node of the tree is the parent node of
  * all the nodes in the tree, and all horizontal nodes are removed.
- * 
+ *
  */
 typedef struct HuffTree
 {
@@ -45,6 +45,6 @@ void huffTree_print_table(HuffTree t);
 HuffTree huffTree_construct_f_stream(FILE *fp);
 void huffTree_destroy(HuffTree t);
 void huffTree_qsort(HuffTree *t);
-void huffTree_insert_charFreqNode(struct CharFreqNode *n, char * code, struct CharFreqNode * parent);
+void huffTree_insert_charFreqNode(struct CharFreqNode *n, char *code, struct CharFreqNode *parent);
 
 #endif // HUFFTREE_H_

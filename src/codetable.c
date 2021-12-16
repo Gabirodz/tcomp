@@ -11,10 +11,10 @@ struct CodeNode *construct_CodeNode(char c, char *code, struct CodeNode *next)
     c_n->c = c;
     c_n->code = malloc(sizeof(char) * CODE_MAX_LENGTH);
 
-    //copy param code to node
+    // copy param code to node
     for (int i = 0;; ++i)
     {
-        if (code[i] != 0) //copy until \0
+        if (code[i] != 0) // copy until \0
         {
             c_n->code[i] = code[i];
         }
@@ -36,7 +36,7 @@ void codeTable_insert(struct CodeNode *n, CodeTable *c_t)
         return;
     }
 
-    //insert at the end
+    // insert at the end
     struct CodeNode *prev;
     for (struct CodeNode *c_ni = c_t->begin; c_ni; c_ni = c_ni->next)
     {
@@ -45,18 +45,17 @@ void codeTable_insert(struct CodeNode *n, CodeTable *c_t)
     prev->next = n;
     // puts("out insert");
 }
-char * find_char_code(char c, CodeTable c_t)
+char *find_char_code(char c, CodeTable c_t)
 {
-    if(c_t.begin)
+    if (c_t.begin)
     {
-        for(struct CodeNode * i_n = c_t.begin; i_n; i_n = i_n->next)
+        for (struct CodeNode *i_n = c_t.begin; i_n; i_n = i_n->next)
         {
-            if(i_n->c == c)
+            if (i_n->c == c)
             {
                 return i_n->code;
             }
         }
-
     }
 }
 
@@ -102,10 +101,10 @@ CodeTable construct_CodeTable_f_tree(HuffTree t)
 
 void codeTable_deallocate(CodeTable c_t)
 {
-    for(struct CodeNode *i_cn = c_t.begin; i_cn;)
+    for (struct CodeNode *i_cn = c_t.begin; i_cn;)
     {
-        struct CodeNode * next_ptr = i_cn->next;
-        
+        struct CodeNode *next_ptr = i_cn->next;
+
         free(i_cn->code);
         free(i_cn);
 
