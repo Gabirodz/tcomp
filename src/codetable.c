@@ -64,7 +64,6 @@ void codeTable_insert(struct CodeNode *n, CodeTable *c_t)
         prev = c_ni;
     }
     prev->next = n;
-    // puts("out insert");
 }
 
 /**
@@ -111,7 +110,6 @@ void code_build(struct CharFreqNode *n, CodeTable *t, char *code)
 
     if (n->nextl)
     {
-        // puts("before construct");
 
         char new_codel[strlen(code)];
         strcpy(new_codel, code);
