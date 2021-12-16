@@ -126,7 +126,6 @@ void huffTree_construct_tree(HuffTree *t)
         new_parent->val = new_parent->nextl->val + new_parent->nextr->val;
 
         huffTree_instert_ordered_node(new_parent, t);
-        // huffTree_enqueue(new_parent, t);
         ++i;
     }
 }
