@@ -72,6 +72,5 @@ $ doxygen Doxifile
 $ cd docs/
 ```
 
-
-
-
+## Author
+Axel Rodriguez.
