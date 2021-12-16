@@ -30,6 +30,9 @@ int main(int argc, char *argv[])
     }
     else if (strcmp(command, "d") == 0) // decompress command
     {
+        if (check_empty(src_path) != 0)
+            return 1;
+            
         char targetname[64];
         strcpy(targetname, src_path);
         char *dest_path = strcat(strtok(targetname, "."), "(decompressed).txt");
