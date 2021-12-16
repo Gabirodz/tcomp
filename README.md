@@ -58,8 +58,12 @@ $ make
 Run the executable.
 
 ```
-$ ./tcomp.exe <FILE_TO_COMPRESS> <OUTPUT_PATH>
+$ ./tcomp.exe <COMMAND> <INPUT_FILE>
 ```
+
+There are two commands: `c` for Compression and `d` for Decompression.
+
+The compressed file is created with the extension ".t.mp". The decompressed file is created ending in "(decompressed).txt".
 
 ## Build the docs
 
