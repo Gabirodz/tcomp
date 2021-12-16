@@ -1,3 +1,4 @@
+/// @file strbin.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,8 +7,22 @@
 #include "strbin.h"
 #include "hufftree.h"
 
+/**
+ * @brief Byte, typedef unsigned char for bit manipulation.
+ * 
+ */
 typedef unsigned char Byte;
 
+/**
+ * @brief Sets a bit of a byte depending on the passed char and the position.
+ * 
+ * e.g. set_bit(&b, '1', 3) will set the third bit in b from right to left to
+ * 1. The starting position is 1, and the last position is 8.
+ * 
+ * @param b 
+ * @param bit 
+ * @param pos 
+ */
 void set_bit(Byte *b, char bit, int pos)
 {
     if (pos > 8)
@@ -22,12 +37,33 @@ void set_bit(Byte *b, char bit, int pos)
     }
 }
 
+/**
+ * @brief Writes the encoded text to a stream.
+ * 
+ * Uses the passed CodeTable to encode the src test, and write it to dest.
+ * 
+ * @param src 
+ * @param dest 
+ * @param c_t 
+ */
 void write_encode_to_stream(FILE *src, FILE *dest, CodeTable c_t)
 {
     write_codeTable_to_stream(dest, c_t);
     write_code_to_stream(src, dest, c_t);
 }
 
+/**
+ * @brief Writes the second section of the compressed file.
+ * 
+ * The second section includes the literal translation of 
+ * each character in the src file to its code, writing them to c_t.
+ * During compression, a C_ENDSTREAM char was added to signal
+ * the end of this section and end of the encoded file.
+ * 
+ * @param src 
+ * @param dest 
+ * @param c_t 
+ */
 void write_code_to_stream(FILE *src, FILE *dest, CodeTable c_t)
 {
     unsigned long bits_used = 0;
@@ -73,6 +109,19 @@ void write_code_to_stream(FILE *src, FILE *dest, CodeTable c_t)
     }
 }
 
+/**
+ * @brief Encodes the CodeTable to the dest file.
+ * 
+ * The first section of the encoded file, adds the metadata necessary
+ * for reconstruction of the HuffTree during decompression.
+ * 
+ * The metadata consists of 3 parts per character. The character itself,
+ * using 1 byte, the size of the character, using 5 bits, and the code of the character
+ * in binary, using a variable amount of bytes up to 31 bits (limited by the size section's 5 bits).
+ * 
+ * @param dest 
+ * @param c_t 
+ */
 void write_codeTable_to_stream(FILE *dest, CodeTable c_t)
 {
     for (struct CodeNode *i_n = c_t.begin; i_n; i_n = i_n->next)
@@ -136,6 +185,15 @@ void write_codeTable_to_stream(FILE *dest, CodeTable c_t)
     return;
 }
 
+/**
+ * @brief Encodes the src file to the dest file.
+ * 
+ * Wrapper for write_encode_to_stream(). Handles paths to files instead of streams.
+ * 
+ * @param src_path 
+ * @param dest_path 
+ * @param c_t 
+ */
 void write_encode_to_file(char const *src_path, char const *dest_path, CodeTable c_t)
 {
 
@@ -157,7 +215,19 @@ void write_encode_to_file(char const *src_path, char const *dest_path, CodeTable
     fclose(dest_p);
 }
 
-void construct_code_string(char *holder, FILE *src) // -------------PROBELM--------=
+/**
+ * @brief Constructs the code of the next character in the CodeTable metadata section of a compressed file.
+ * 
+ * Receives a recipient of the code as a string, reads the character of the first section of a compressed file,
+ * and writes its code to the recipient 'holder' parameter, converting the binary code to string.
+ * 
+ * NOTE: Assumes the character byte has been read beforehand. Expects to read the byte containing the size
+ * first.
+ * 
+ * @param holder 
+ * @param src 
+ */
+void construct_code_string(char *holder, FILE *src)
 {
     Byte size_byte; // byte that contains the size
 
@@ -221,6 +291,14 @@ void construct_code_string(char *holder, FILE *src) // -------------PROBELM-----
     holder[code_char] = '\0';
 }
 
+/**
+ * @brief Construct the HuffTree from a file stream.
+ * 
+ * Reads the first section (metadata) of the compressed file and reconstructs the HuffTree.
+ * 
+ * @param src 
+ * @return HuffTree 
+ */
 HuffTree construct_huffTree_f_stream(FILE *src)
 {
     HuffTree t;
@@ -253,6 +331,16 @@ HuffTree construct_huffTree_f_stream(FILE *src)
     return t;
 }
 
+/**
+ * @brief Reads the second part of the compressed file and  uses the HuffTree to decode it to dest.
+ * 
+ * Receives a HuffTree constructed with construct_huffTree_f_stream(), and decodes the second part
+ * of the file to dest.
+ * 
+ * @param src 
+ * @param dest 
+ * @param t 
+ */
 void tree_decode_to_stream(FILE *src, FILE *dest, HuffTree t)
 {
 
@@ -301,6 +389,13 @@ void tree_decode_to_stream(FILE *src, FILE *dest, HuffTree t)
         }
     }
 }
+
+/**
+ * @brief Wrapper function for encoding (compression).
+ * 
+ * @param src_path 
+ * @param dest_path 
+ */
 void encode_to_file(char *src_path, char *dest_path)
 {
     FILE *src_fp = fopen(src_path, "r");
@@ -334,7 +429,12 @@ void encode_to_file(char *src_path, char *dest_path)
 
     puts("File compressed.");
 }
-
+/**
+ * @brief Wrapper function for decoding (decompression).
+ * 
+ * @param src_path 
+ * @param dest_path 
+ */
 void decode_to_file(char *src_path, char *dest_path)
 {
     FILE *src_fp = fopen(src_path, "rb"); // compressed file in binary

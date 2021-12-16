@@ -280,10 +280,22 @@ void huffTree_qsort(HuffTree *t)
     }
 }
 
+/**
+ * @brief Inserts a CharFreqNode on a built HuffTree by its code.
+ * 
+ * According to the code of a CharFreqNode, inserts it in the appropiate place,
+ * creating the parent nodes necessary for it in the process.
+ * e.g. ASCII 'a' with code 011 will be inserted at depth 4, starting from the parent
+ * and taking the left-right-right child consecutively.
+ * 
+ * @param n Parent of the tree
+ * @param code 
+ * @param parent 
+ */
 void huffTree_insert_charFreqNode(struct CharFreqNode *n, char *code, struct CharFreqNode *parent)
 {
 
-    if (strcmp(code, "1") == 0) // Strings equal, right path
+    if (strcmp(code, "1") == 0) // Last path to the right, code has a single char left.
     {
         if (parent->nextr != NULL)
         {
@@ -294,7 +306,7 @@ void huffTree_insert_charFreqNode(struct CharFreqNode *n, char *code, struct Cha
         return;
     }
 
-    if (strcmp(code, "0") == 0) // Strings equal, left path
+    if (strcmp(code, "0") == 0) // Last path to the left.
     {
         if (parent->nextl != NULL)
         {
@@ -305,7 +317,7 @@ void huffTree_insert_charFreqNode(struct CharFreqNode *n, char *code, struct Cha
         return;
     }
 
-    if (code[0] == '1')
+    if (code[0] == '1') //General path to the right.
     {
         if (!(parent->nextr))
         {
@@ -315,7 +327,7 @@ void huffTree_insert_charFreqNode(struct CharFreqNode *n, char *code, struct Cha
         huffTree_insert_charFreqNode(n, code + 1, parent->nextr);
         return;
     }
-    if (code[0] == '0')
+    if (code[0] == '0') //General path to the left.
     {
         if (!(parent->nextl))
         {

@@ -63,6 +63,14 @@ void node_print_tree(struct CharFreqNode *n)
     }
 }
 
+/**
+ * @brief Deallocate all the child nodes of a given node.
+ * 
+ * Deallocates recursively all the descendants at all depth levels
+ * of a tree node.
+ * 
+ * @param n 
+ */
 void huffTree_nodeTree_deallocate(struct CharFreqNode *n)
 {
     if (n->nextl)
@@ -75,5 +83,4 @@ void huffTree_nodeTree_deallocate(struct CharFreqNode *n)
     }
 
     free(n);
-    n = NULL;
 }

@@ -1,8 +1,16 @@
+/// @file codetable.h
 #if !defined(CODETABLE_H_)
 #define CODETABLE_H_
 
 #define CODE_MAX_LENGTH 31
 
+/**
+ * @brief Node for the CodeTable
+ * 
+ * Basic node of a linked list, includes a reference to the next node,
+ * and two pieces of data. The ASCII character and its code.
+ * 
+ */
 struct CodeNode
 {
     char c;
@@ -10,6 +18,13 @@ struct CodeNode
     struct CodeNode *next;
 };
 
+/**
+ * @brief Linked list.
+ * 
+ * The CodeTable is a linked list of CodeNodes, serves simply as the 
+ * entrypoint and contains only a reference to the first CodeNode.
+ * 
+ */
 typedef struct CodeTable
 {
     struct CodeNode *begin;
