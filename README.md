@@ -11,6 +11,8 @@ always have a backup in case things go wrong. Decimal ASCII 3 "End Of Text" and 
 
 ## How it works
 
+Note: If you cannot see the images, check out this section in https://github.com/Gabirodz/tcomp.
+
 `tcomp` is based on Huffman Coding to encode and decode the text file.
 
 The main data structure of `tcomp` is the `HuffTree`.
@@ -61,7 +63,7 @@ $ ./tcomp.exe <FILE_TO_COMPRESS> <OUTPUT_PATH>
 
 ## Build the docs
 
-Note: Doxygen is required to build the docs.
+Note: doxygen is required to build the docs.
 
 ```
 $ git clone https://github.com/Gabirodz/tcomp.git
@@ -69,10 +71,6 @@ $ cd tcomp
 $ doxygen Doxifile
 $ cd docs/
 ```
-
-## Pending
-
-Documentation for several source files.
 
 
 
