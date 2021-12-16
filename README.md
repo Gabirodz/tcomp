@@ -4,6 +4,11 @@
 
 `tcomp` is a simple command-line single text file compressor.
 
+## IMPORTANT
+
+`tcomp` is a simple, quick project I made for a school assignment. It has not been thoroughly tested, so do not use it to compress important files and
+always have a backup in case things go wrong. Decimal ASCII 3 "End Of Text" and Decimal ASCII 4 "End Of Transmission" are used by `tcomp` to form the binary compressed file, so compressing a file that includes these characters will go wrong.
+
 ## How it works
 
 `tcomp` is based on Huffman Coding to encode and decode the text file.
@@ -65,10 +70,7 @@ $ doxygen Doxifile
 $ cd docs/
 ```
 
-## IMPORTANT
 
-`tcomp` is a simple, quick project I made for a school assignment. It has not been thoroughly tested, so do not use it to compress important files and
-always have a backup in case things go wrong. Decimal ASCII 3 "End Of Text" and Decimal ASCII 4 "End Of Transmission" are used by `tcomp` to form the binary compressed file, so compressing a file that includes these characters will go wrong.
 
 
 
